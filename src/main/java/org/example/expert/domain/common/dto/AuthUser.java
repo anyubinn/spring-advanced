@@ -13,6 +13,7 @@ public class AuthUser {
     private final UserRole userRole;
 
     public static AuthUser of(Long id, String email, UserRole userRole) {
+
         return new AuthUser(id, email, userRole);
     }
 }

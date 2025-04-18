@@ -79,7 +79,7 @@ class ManagerServiceTest {
         Todo todo = new Todo("Title", "Contents", "Sunny", user);
         ReflectionTestUtils.setField(todo, "id", todoId);
 
-        Manager mockManager = new Manager(todo.getUser(), todo);
+        Manager mockManager = Manager.of(user, todo);
         List<Manager> managerList = List.of(mockManager);
 
         given(todoRepository.findById(todoId)).willReturn(Optional.of(todo));
@@ -97,7 +97,7 @@ class ManagerServiceTest {
     @Test // 테스트코드 샘플
     void todo가_정상적으로_등록된다() {
         // given
-        AuthUser authUser = new AuthUser(1L, "a@a.com", UserRole.USER);
+        AuthUser authUser = AuthUser.of(1L, "a@a.com", UserRole.USER);
         User user = User.fromAuthUser(authUser);  // 일정을 만든 유저
 
         long todoId = 1L;

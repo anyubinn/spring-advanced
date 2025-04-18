@@ -26,4 +26,9 @@ public class Manager {
         this.user = user;
         this.todo = todo;
     }
+
+    public static Manager of(User user, Todo todo) {
+
+        return new Manager(user, todo);
+    }
 }
