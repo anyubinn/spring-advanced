@@ -22,7 +22,7 @@ public class TodoSaveResponse {
                 .title(todo.getTitle())
                 .contents(todo.getContents())
                 .weather(weather)
-                .user(new UserResponse(todo.getUser().getId(), todo.getUser().getEmail()))
+                .user(UserResponse.of(todo.getUser()))
                 .build();
     }
 }

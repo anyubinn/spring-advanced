@@ -27,7 +27,7 @@ public class TodoResponse {
                 .title(todo.getTitle())
                 .contents(todo.getContents())
                 .weather(todo.getWeather())
-                .user(new UserResponse(todo.getUser().getId(), todo.getUser().getEmail()))
+                .user(UserResponse.of(todo.getUser()))
                 .createdAt(todo.getCreatedAt())
                 .modifiedAt(todo.getModifiedAt())
                 .build();

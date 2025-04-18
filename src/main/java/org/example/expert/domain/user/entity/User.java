@@ -33,6 +33,11 @@ public class User extends Timestamped {
         this.userRole = userRole;
     }
 
+    public static User of(String email, String password, UserRole userRole) {
+
+        return new User(email, password, userRole);
+    }
+
     public static User fromAuthUser(AuthUser authUser) {
         return new User(authUser.getId(), authUser.getEmail(), authUser.getUserRole());
     }
