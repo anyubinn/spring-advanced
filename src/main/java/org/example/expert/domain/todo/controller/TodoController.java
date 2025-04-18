@@ -9,6 +9,7 @@ import org.example.expert.domain.todo.dto.response.TodoResponse;
 import org.example.expert.domain.todo.dto.response.TodoSaveResponse;
 import org.example.expert.domain.todo.service.TodoService;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,10 @@ public class TodoController {
             @Auth AuthUser authUser,
             @Valid @RequestBody TodoSaveRequest todoSaveRequest
     ) {
-        return ResponseEntity.ok(todoService.saveTodo(authUser, todoSaveRequest));
+
+        TodoSaveResponse todoSaveResponse = todoService.saveTodo(authUser, todoSaveRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(todoSaveResponse);
     }
 
     @GetMapping
@@ -32,11 +36,17 @@ public class TodoController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        return ResponseEntity.ok(todoService.getTodos(page, size));
+
+        Page<TodoResponse> todosList = todoService.getTodos(page, size);
+
+        return ResponseEntity.ok(todosList);
     }
 
     @GetMapping("/{todoId}")
     public ResponseEntity<TodoResponse> getTodo(@PathVariable long todoId) {
-        return ResponseEntity.ok(todoService.getTodo(todoId));
+
+        TodoResponse todoResponse = todoService.getTodo(todoId);
+
+        return ResponseEntity.ok(todoResponse);
     }
 }

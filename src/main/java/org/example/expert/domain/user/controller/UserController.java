@@ -19,11 +19,17 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponse> getUser(@PathVariable long userId) {
-        return ResponseEntity.ok(userService.getUser(userId));
+
+        UserResponse userResponse = userService.getUser(userId);
+
+        return ResponseEntity.ok(userResponse);
     }
 
     @PutMapping
-    public void changePassword(@Auth AuthUser authUser, @Valid @RequestBody UserChangePasswordRequest userChangePasswordRequest) {
+    public ResponseEntity<Void> changePassword(@Auth AuthUser authUser, @Valid @RequestBody UserChangePasswordRequest userChangePasswordRequest) {
+
         userService.changePassword(authUser.getId(), userChangePasswordRequest);
+
+        return ResponseEntity.noContent().build();
     }
 }

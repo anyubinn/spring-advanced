@@ -7,6 +7,8 @@ import org.example.expert.domain.auth.dto.request.SignupRequest;
 import org.example.expert.domain.auth.dto.response.SigninResponse;
 import org.example.expert.domain.auth.dto.response.SignupResponse;
 import org.example.expert.domain.auth.service.AuthService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +22,18 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public SignupResponse signup(@Valid @RequestBody SignupRequest signupRequest) {
-        return authService.signup(signupRequest);
+    public ResponseEntity<SignupResponse> signup(@Valid @RequestBody SignupRequest signupRequest) {
+
+        SignupResponse signupResponse = authService.signup(signupRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(signupResponse);
     }
 
     @PostMapping("/signin")
-    public SigninResponse signin(@Valid @RequestBody SigninRequest signinRequest) {
-        return authService.signin(signinRequest);
+    public ResponseEntity<SigninResponse> signin(@Valid @RequestBody SigninRequest signinRequest) {
+
+        SigninResponse signinResponse = authService.signin(signinRequest);
+
+        return ResponseEntity.ok(signinResponse);
     }
 }
