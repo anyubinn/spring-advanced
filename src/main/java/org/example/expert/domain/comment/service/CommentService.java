@@ -1,5 +1,6 @@
 package org.example.expert.domain.comment.service;
 
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.example.expert.domain.comment.dto.request.CommentSaveRequest;
 import org.example.expert.domain.comment.dto.response.CommentResponse;
@@ -35,19 +36,14 @@ public class CommentService {
 
         Comment savedComment = commentRepository.save(newComment);
 
-        return CommentSaveResponse.of(savedComment, new UserResponse(user.getId(), user.getEmail()));
+        return CommentSaveResponse.of(savedComment, UserResponse.of(user));
     }
 
     @Transactional(readOnly = true)
     public List<CommentResponse> getComments(long todoId) {
         List<Comment> commentList = commentRepository.findByTodoIdWithUser(todoId);
 
-        List<CommentResponse> dtoList = new ArrayList<>();
-        for (Comment comment : commentList) {
-            User user = comment.getUser();
-            CommentResponse dto = CommentResponse.of(comment, new UserResponse(user.getId(), user.getEmail()));
-            dtoList.add(dto);
-        }
-        return dtoList;
+        return commentList.stream().map(comment -> CommentResponse.of(comment, UserResponse.of(comment.getUser())))
+                .collect(Collectors.toList());
     }
 }

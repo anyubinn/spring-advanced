@@ -1,5 +1,6 @@
 package org.example.expert.domain.manager.service;
 
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.common.exception.InvalidRequestException;
@@ -49,7 +50,7 @@ public class ManagerService {
         Manager newManagerUser = Manager.of(managerUser, todo);
         Manager savedManagerUser = managerRepository.save(newManagerUser);
 
-        return ManagerSaveResponse.of(savedManagerUser, new UserResponse(managerUser.getId(), managerUser.getEmail()));
+        return ManagerSaveResponse.of(savedManagerUser, UserResponse.of(managerUser));
     }
 
     @Transactional(readOnly = true)
@@ -59,13 +60,8 @@ public class ManagerService {
 
         List<Manager> managerList = managerRepository.findByTodoIdWithUser(todo.getId());
 
-        List<ManagerResponse> dtoList = new ArrayList<>();
-        for (Manager manager : managerList) {
-            User user = manager.getUser();
-            ManagerResponse dto = ManagerResponse.of(manager, new UserResponse(user.getId(), user.getEmail()));
-            dtoList.add(dto);
-        }
-        return dtoList;
+        return managerList.stream().map(manager -> ManagerResponse.of(manager, UserResponse.of(manager.getUser())))
+                .collect(Collectors.toList());
     }
 
     @Transactional
