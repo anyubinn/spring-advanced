@@ -7,6 +7,7 @@ import org.example.expert.domain.manager.dto.response.ManagerResponse;
 import org.example.expert.domain.manager.dto.response.ManagerSaveResponse;
 import org.example.expert.domain.manager.entity.Manager;
 import org.example.expert.domain.manager.repository.ManagerRepository;
+import org.example.expert.domain.todo.dto.request.TodoSaveRequest;
 import org.example.expert.domain.todo.entity.Todo;
 import org.example.expert.domain.todo.repository.TodoRepository;
 import org.example.expert.domain.user.entity.User;
@@ -99,9 +100,10 @@ class ManagerServiceTest {
         // given
         AuthUser authUser = AuthUser.of(1L, "a@a.com", UserRole.USER);
         User user = User.fromAuthUser(authUser);  // 일정을 만든 유저
+        TodoSaveRequest request = new TodoSaveRequest("title", "contents");
 
         long todoId = 1L;
-        Todo todo = new Todo("Test Title", "Test Contents", "Sunny", user);
+        Todo todo = Todo.of(request, "Sunny", user);
 
         long managerUserId = 2L;
         User managerUser = new User("b@b.com", "password", UserRole.USER);  // 매니저로 등록할 유저

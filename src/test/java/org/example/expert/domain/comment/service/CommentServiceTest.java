@@ -7,6 +7,7 @@ import org.example.expert.domain.comment.repository.CommentRepository;
 import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.common.exception.InvalidRequestException;
 import org.example.expert.domain.common.exception.ServerException;
+import org.example.expert.domain.todo.dto.request.TodoSaveRequest;
 import org.example.expert.domain.todo.entity.Todo;
 import org.example.expert.domain.todo.repository.TodoRepository;
 import org.example.expert.domain.user.entity.User;
@@ -56,17 +57,18 @@ class CommentServiceTest {
     public void comment를_정상적으로_등록한다() {
         // given
         long todoId = 1;
-        CommentSaveRequest request = new CommentSaveRequest("contents");
-        AuthUser authUser = new AuthUser(1L, "email", UserRole.USER);
+        TodoSaveRequest todoRequest = new TodoSaveRequest("title", "todo contents");
+        CommentSaveRequest commentRequest = new CommentSaveRequest("contents");
+        AuthUser authUser = AuthUser.of(1L, "email", UserRole.USER);
         User user = User.fromAuthUser(authUser);
-        Todo todo = new Todo("title", "title", "contents", user);
-        Comment comment = Comment.of(request, user, todo);
+        Todo todo = Todo.of(todoRequest, "sunny", user);
+        Comment comment = Comment.of(commentRequest, user, todo);
 
         given(todoRepository.findById(anyLong())).willReturn(Optional.of(todo));
         given(commentRepository.save(any())).willReturn(comment);
 
         // when
-        CommentSaveResponse result = commentService.saveComment(authUser, todoId, request);
+        CommentSaveResponse result = commentService.saveComment(authUser, todoId, commentRequest);
 
         // then
         assertNotNull(result);
