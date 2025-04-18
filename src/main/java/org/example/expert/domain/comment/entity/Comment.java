@@ -3,6 +3,7 @@ package org.example.expert.domain.comment.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.expert.domain.comment.dto.request.CommentSaveRequest;
 import org.example.expert.domain.common.entity.Timestamped;
 import org.example.expert.domain.todo.entity.Todo;
 import org.example.expert.domain.user.entity.User;
@@ -31,7 +32,8 @@ public class Comment extends Timestamped {
         this.todo = todo;
     }
 
-    public void update(String contents) {
-        this.contents = contents;
+    public static Comment of(CommentSaveRequest request, User user, Todo todo) {
+
+        return new Comment(request.getContents(), user, todo);
     }
 }
