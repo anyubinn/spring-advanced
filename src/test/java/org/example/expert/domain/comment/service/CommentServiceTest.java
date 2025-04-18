@@ -39,7 +39,7 @@ class CommentServiceTest {
         // given
         long todoId = 1;
         CommentSaveRequest request = new CommentSaveRequest("contents");
-        AuthUser authUser = new AuthUser(1L, "email", UserRole.USER);
+        AuthUser authUser = AuthUser.of(1L, "email", UserRole.USER);
 
         given(todoRepository.findById(anyLong())).willReturn(Optional.empty());
 
